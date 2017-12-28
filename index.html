@@ -33,17 +33,21 @@
         .controller('main', ['$scope', '$http', function($scope, $http) {
             $scope.bool = true;
             $scope.color = 'lightskyblue';
+            //登陆点击
             $scope.clickD = function() {
                 $scope.bool = true;
                 $scope.color = 'lightskyblue';
                 $scope.color1 = 'lightcoral';
-            }
+            };
+            //注册点击
             $scope.clickC = function() {
                 $scope.bool = false;
                 $scope.color1 = 'lightskyblue';
                 $scope.color = 'lightcoral';
-            }
+            };
+            //本地存储
             const dogo = window.localStorage;
+            //点击注册存储在本地
             $scope.submit1 = function(obj) {
                 if (!dogo.getItem('into')) {
                     dogo.setItem('into', '[]');
@@ -59,10 +63,12 @@
                 $scope.color1 = 'lightcoral';
                 $scope.user1 = '';
                 $scope.pass1 = '';
-            }
+            };
+            //点击登录验证
             $scope.submit = function(obj) {
                 if (dogo.getItem('into')) {
                     var into = JSON.parse(dogo.getItem('into'));
+                    //验证本地有没有存储
                     into.forEach(function(v) {
                         if (v[0].name) {
                             if (v[0].name === obj.name && v[0].num === obj.num) {
