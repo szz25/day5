@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body ng-controller="main">
+    <div class="box">
+        <div class="btn">
+            <button ng-click="clickD(color)" ng-style="{background:color}">登录</button>
+            <button ng-click="clickC(color1)" ng-style="{background:color1}">注册</button>
+        </div>
+        <form ng-show="bool">
+            <input type="text" required placeholder=" 请输入用户名" ng-model="user"></br>
+            <input type="text" required placeholder=" 请输入密码" ng-model="pass"></br>
+            <input type="submit" class="sub" ng-click="submit({name: user,num: pass})">
+        </form>
+        <form ng-hide="bool">
+            <input type="text" required placeholder=" 请输入用户名" ng-model="user1"></br>
+            <input type="text" required placeholder=" 请输入密码" ng-model="pass1"></br>
+            <input type="submit" class="sub" value="注册" ng-click="submit1({name: user1,num: pass1})">
+        </form>
+    </div>
+</body>
+<script src="./js/angular.js"></script>
+<script>
+    angular.module('app', [])
+        .controller('main', ['$scope', '$http', function($scope, $http) {
+            $scope.bool = true;
+            $scope.color = 'lightskyblue';
+            $scope.clickD = function() {
+                $scope.bool = true;
+                $scope.color = 'lightskyblue';
+                $scope.color1 = 'lightcoral';
+            }
+            $scope.clickC = function() {
+                $scope.bool = false;
+                $scope.color1 = 'lightskyblue';
+                $scope.color = 'lightcoral';
+            }
+            const dogo = window.localStorage;
+            $scope.submit1 = function(obj) {
+                if (!dogo.getItem('into')) {
+                    dogo.setItem('into', '[]');
+                }
+                var into = JSON.parse(dogo.getItem('into'));
+                var arr = [];
+                arr.push(obj);
+                into.push(arr)
+                dogo.setItem('into', JSON.stringify(into));
+                alert('注册成功')
+                $scope.bool = true;
+                $scope.color = 'lightskyblue';
+                $scope.color1 = 'lightcoral';
+                $scope.user1 = '';
+                $scope.pass1 = '';
+            }
+            $scope.submit = function(obj) {
+                if (dogo.getItem('into')) {
+                    var into = JSON.parse(dogo.getItem('into'));
+                    into.forEach(function(v) {
+                        if (v[0].name) {
+                            if (v[0].name === obj.name && v[0].num === obj.num) {
+                                alert('登录成功')
+                                $scope.user = '';
+                                $scope.pass = '';
+                            }
+                        }
+                    });
+                } else {
+                    alert('您还没有注册 请先注册')
+                    $scope.user = '';
+                    $scope.pass = '';
+                }
+            }
+        }])
+</script>
+
+</html>
